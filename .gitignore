@@ -1,0 +1,29 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Ll]og/
+[Ll]ogs/
+
+# Test results and coverage
+[Tt]est[Rr]esults/
+coverage*.xml
+coverage*.json
+*.trx
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/packages/
+
+# IDE and editor files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.swp
+
+# macOS
+.DS_Store
