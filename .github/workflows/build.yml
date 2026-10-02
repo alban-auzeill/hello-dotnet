@@ -34,6 +34,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.scanner.sonarcloudUrl="http://localhost:3000" /d:sonar.scanner.apiBaseUrl="/web-api"
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill"
           dotnet build
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end
