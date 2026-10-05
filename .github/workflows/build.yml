@@ -34,6 +34,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill" &&
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill" /d:sonar.token="$env:SONAR_TOKEN" &&
           dotnet build &&
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end /d:sonar.token="$env:SONAR_TOKEN"
+
+          # Not chained with "&&" so the cache is listed even when the analysis fails.
+          # Get-ChildItem is a cmdlet, so $LASTEXITCODE (the step result) keeps the exit code of the chain above.
+          Get-ChildItem -LiteralPath "$env:USERPROFILE\.sonar\cache" -Recurse -Force |
+            Format-Table Mode, LastWriteTime, Length, FullName -AutoSize |
+            Out-String -Width 4096
