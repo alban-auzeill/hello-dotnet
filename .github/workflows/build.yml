@@ -41,8 +41,8 @@ jobs:
           Write-Host "SONAR_TOKEN sha1: $tokenSha1"
 
           # Windows PowerShell does not stop on native command failures, so check each exit code
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.verbose="true"
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill" /d:sonar.token="$env:SONAR_TOKEN"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet build
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.verbose="true"
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end /d:sonar.token="$env:SONAR_TOKEN"
