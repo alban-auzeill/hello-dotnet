@@ -27,3 +27,6 @@ coverage*.json
 
 # macOS
 .DS_Store
+
+# Local secrets
+.secret

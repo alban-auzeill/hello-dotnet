@@ -34,6 +34,15 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill"
+          # Diagnostic: compare with `printf %s "$TOKEN" | shasum` locally without exposing the token
+          $tokenBytes = [System.Text.Encoding]::UTF8.GetBytes("$env:SONAR_TOKEN")
+          $tokenSha1 = -join ([System.Security.Cryptography.SHA1]::Create().ComputeHash($tokenBytes) | ForEach-Object { $_.ToString("x2") })
+          Write-Host "SONAR_TOKEN length: $("$env:SONAR_TOKEN".Length)"
+          Write-Host "SONAR_TOKEN sha1: $tokenSha1"
+
+          # Windows PowerShell does not stop on native command failures, so check each exit code
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" begin /k:"alban-auzeill_hello-dotnet" /o:"alban-auzeill" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.verbose="true"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet build
-          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$env:USERPROFILE\.sonar\cache\scanner\dotnet-sonarscanner" end /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.verbose="true"
